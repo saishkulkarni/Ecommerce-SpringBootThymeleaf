@@ -10,7 +10,7 @@ import jakarta.validation.Valid;
 
 public interface CustomerService {
 
-	String loadRegister(ModelMap map);
+	String loadRegister(ModelMap map,Customer customer);
 
 	String loadRegister(@Valid Customer customer, BindingResult result, HttpSession session);
 

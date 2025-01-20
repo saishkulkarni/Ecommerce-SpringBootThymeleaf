@@ -27,12 +27,6 @@ import jakarta.validation.Valid;
 public class SellerServiceImpl implements SellerService {
 
 	@Autowired
-	Seller seller;
-
-	@Autowired
-	Product product;
-
-	@Autowired
 	CloudinaryHelper cloudinaryHelper;
 
 	@Autowired
@@ -48,7 +42,7 @@ public class SellerServiceImpl implements SellerService {
 	CustomerRepository customerRepository;
 
 	@Override
-	public String loadRegister(ModelMap map) {
+	public String loadRegister(ModelMap map, Seller seller) {
 		map.put("seller", seller);
 		return "seller-register.html";
 	}
@@ -104,7 +98,7 @@ public class SellerServiceImpl implements SellerService {
 	}
 
 	@Override
-	public String addProduct(HttpSession session, ModelMap map) {
+	public String addProduct(HttpSession session, Product product, ModelMap map) {
 		if (session.getAttribute("seller") != null) {
 			map.put("product", product);
 			return "add-product.html";
@@ -125,7 +119,6 @@ public class SellerServiceImpl implements SellerService {
 				productRepository.save(product);
 
 				session.setAttribute("success", "Product Added Success");
-				;
 				return "redirect:/seller/home";
 			}
 		} else {
@@ -184,28 +177,28 @@ public class SellerServiceImpl implements SellerService {
 				return "edit-product.html";
 			} else {
 				product.setSeller((Seller) session.getAttribute("seller"));
-				
+
 				byte[] picture;
 				try {
 					picture = new byte[image.getInputStream().available()];
 					image.getInputStream().read(picture);
 
-					if(picture.length>0)
-					product.setImageLink(cloudinaryHelper.saveImage(image));
+					if (picture.length > 0)
+						product.setImageLink(cloudinaryHelper.saveImage(image));
 					else
-					product.setImageLink(productRepository.findById(product.getId()).orElseThrow().getImageLink()); 
-				
+						product.setImageLink(productRepository.findById(product.getId()).orElseThrow().getImageLink());
+
 				} catch (IOException e) {
-					e.printStackTrace();
+
 				}
-				
+
 				productRepository.save(product);
 
 				session.setAttribute("success", "Product Updated Success");
-				
+
 				return "redirect:/seller/manage-products";
 			}
-		}else {
+		} else {
 			session.setAttribute("failure", "Invalid Session, Login Again");
 			return "redirect:/login";
 		}
@@ -213,7 +206,7 @@ public class SellerServiceImpl implements SellerService {
 
 	@Override
 	public String resendOtp(int id, HttpSession session) {
-		Seller seller=sellerRepository.findById(id).orElseThrow();
+		Seller seller = sellerRepository.findById(id).orElseThrow();
 		int otp = new Random().nextInt(100000, 1000000);
 		seller.setOtp(otp);
 		sellerRepository.save(seller);

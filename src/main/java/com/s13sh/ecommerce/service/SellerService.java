@@ -12,7 +12,7 @@ import jakarta.validation.Valid;
 
 public interface SellerService {
 
-	String loadRegister(ModelMap map);
+	String loadRegister(ModelMap map,Seller seller);
 
 	String loadRegister(Seller seller, BindingResult result, HttpSession session);
 
@@ -20,7 +20,7 @@ public interface SellerService {
 
 	String loadHome(HttpSession session);
 
-	String addProduct(HttpSession session,ModelMap map);
+	String addProduct(HttpSession session,Product product,ModelMap map);
 
 	String addProduct(HttpSession session, @Valid Product product, BindingResult result, MultipartFile image);
 

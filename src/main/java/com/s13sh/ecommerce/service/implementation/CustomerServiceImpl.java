@@ -36,12 +36,8 @@ import jakarta.validation.Valid;
 public class CustomerServiceImpl implements CustomerService {
 
     @Autowired
-    Customer customer;
-
-
-    @Autowired
     CustomerOrderRepository orderRepository;
-    
+
     @Autowired
     MyEmailSender emailSender;
 
@@ -54,6 +50,10 @@ public class CustomerServiceImpl implements CustomerService {
     @Autowired
     ItemRepository itemRepository;
 
+    Order order;
+
+    RazorpayClient razorpay ;
+
     @Autowired
     CustomerRepository customerRepository;
 
@@ -64,7 +64,7 @@ public class CustomerServiceImpl implements CustomerService {
     ProductRepository productRepository;
 
     @Override
-    public String loadRegister(ModelMap map) {
+    public String loadRegister(ModelMap map,Customer customer) {
         map.put("customer", customer);
         return "customer-register.html";
     }
@@ -84,8 +84,8 @@ public class CustomerServiceImpl implements CustomerService {
         }
 
         if (result.hasErrors()) {
-            return "customer-register.html"; 
-        }else {
+            return "customer-register.html";
+        } else {
             int otp = new Random().nextInt(100000, 1000000);
             customer.setOtp(otp);
             customer.setPassword(AES.encrypt(customer.getPassword(), "123"));
@@ -135,8 +135,8 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public String loadHome(HttpSession session) {
         if (session.getAttribute("customer") != null) {
-            return "customer-home.html"; 
-        }else {
+            return "customer-home.html";
+        } else {
             session.setAttribute("failure", "Invalid Session, Login Again");
             return "redirect:/login";
         }
@@ -314,7 +314,6 @@ public class CustomerServiceImpl implements CustomerService {
                 session.setAttribute("failure", "No Item in Cart");
                 return "redirect:/customer/home";
             } else {
-                RazorpayClient razorpay = null;
                 try {
                     razorpay = new RazorpayClient(key, secret);
                 } catch (RazorpayException ex) {
@@ -324,9 +323,9 @@ public class CustomerServiceImpl implements CustomerService {
                 orderRequest.put("amount", customer.getCart().getPrice() * 100);
                 orderRequest.put("currency", "INR");
 
-                Order order = null;
+                
                 try {
-                    order = razorpay.orders.create(orderRequest);
+                    order=razorpay.orders.create(orderRequest);
                 } catch (RazorpayException ex) {
                 }
 
@@ -336,26 +335,25 @@ public class CustomerServiceImpl implements CustomerService {
                 map.put("orderId", order.get("id"));
                 map.put("cart", customer.getCart());
 
-                              CustomerOrder order1 = new CustomerOrder();
-                              List<Item> newItems = new ArrayList<>();
-                              for (Item item : customer.getCart().getItems()) {
-                                  Item newItem = new Item();
-                                  newItem.setName(item.getName());
-                                  newItem.setPrice(item.getPrice());
-                                  newItem.setQuantity(item.getQuantity());
-                                  newItem.setCategory(item.getCategory());
-                                  newItem.setDescription(item.getDescription());
-                                  newItem.setImageLink(item.getImageLink());
-                                  newItems.add(newItem);
-                              }
+                CustomerOrder order1 = new CustomerOrder();
+                List<Item> newItems = new ArrayList<>();
+                for (Item item : customer.getCart().getItems()) {
+                    Item newItem = new Item();
+                    newItem.setName(item.getName());
+                    newItem.setPrice(item.getPrice());
+                    newItem.setQuantity(item.getQuantity());
+                    newItem.setCategory(item.getCategory());
+                    newItem.setDescription(item.getDescription());
+                    newItem.setImageLink(item.getImageLink());
+                    newItems.add(newItem);
+                }
 
-                              order1.setItems(newItems);
-                              order1.setTotalAmount(customer.getCart().getPrice());
-                              order1.setOrderId(order.get("id"));
-                              order1.setCustomer(customer);
+                order1.setItems(newItems);
+                order1.setTotalAmount(customer.getCart().getPrice());
+                order1.setOrderId(order.get("id"));
+                order1.setCustomer(customer);
 
-                              orderRepository.save(order1);            
-
+                orderRepository.save(order1);
 
                 map.put("id", order1.getId());
                 map.put("customer", customer);
@@ -374,18 +372,19 @@ public class CustomerServiceImpl implements CustomerService {
         if (session.getAttribute("customer") != null) {
             Customer customer = (Customer) session.getAttribute("customer");
 
-            List<Integer> itemIds = customer.getCart().getItems().stream().mapToInt(x->x.getId()).boxed().collect(Collectors.toList());
+            List<Integer> itemIds = customer.getCart().getItems().stream().mapToInt(x -> x.getId()).boxed()
+                    .collect(Collectors.toList());
             customer.getCart().getItems().clear();
             customerRepository.save(customer);
             itemRepository.deleteAllById(itemIds);
 
-            CustomerOrder order = orderRepository.findById(id).orElseThrow();
-            order.setOrderDateTime(LocalDateTime.now());
-            order.setPaymentId(razorpay_payment_id);
-            orderRepository.save(order);
+            CustomerOrder customerOrder = orderRepository.findById(id).orElseThrow();
+            customerOrder.setOrderDateTime(LocalDateTime.now());
+            customerOrder.setPaymentId(razorpay_payment_id);
+            orderRepository.save(customerOrder);
             session.setAttribute("success", "Order Placed Successfully");
             return "redirect:/customer/home";
-        }else {
+        } else {
             session.setAttribute("failure", "Invalid Session, Login Again");
             return "redirect:/login";
         }
@@ -393,22 +392,20 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public String viewOrders(HttpSession session, ModelMap map) {
-       if(session.getAttribute("customer") != null) {
-           Customer customer = (Customer) session.getAttribute("customer");
-           List<CustomerOrder> orders = orderRepository.findByCustomerAndPaymentIdIsNotNull(customer);
-           if(orders.isEmpty()) {
-               session.setAttribute("failure", "No Orders Found");
-               return "redirect:/customer/home";
-           }
-           else{
-               map.put("orders", orders);
-               return "customer-order-history.html";
-           }
-       }else {
-           session.setAttribute("failure", "Invalid Session, Login Again");
-           return "redirect:/login";
-       }
+        if (session.getAttribute("customer") != null) {
+            Customer customer = (Customer) session.getAttribute("customer");
+            List<CustomerOrder> orders = orderRepository.findByCustomerAndPaymentIdIsNotNull(customer);
+            if (orders.isEmpty()) {
+                session.setAttribute("failure", "No Orders Found");
+                return "redirect:/customer/home";
+            } else {
+                map.put("orders", orders);
+                return "customer-order-history.html";
+            }
+        } else {
+            session.setAttribute("failure", "Invalid Session, Login Again");
+            return "redirect:/login";
+        }
     }
 
 }
-    

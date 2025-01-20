@@ -24,8 +24,8 @@ public class CustomerController {
 	CustomerService customerService;
 
 	@GetMapping("/register")
-	public String loadRegister(ModelMap map) {
-		return customerService.loadRegister(map);
+	public String loadRegister(ModelMap map,Customer customer) {
+		return customerService.loadRegister(map,customer);
 	}
 
 	@PostMapping("/register")

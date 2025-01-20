@@ -21,18 +21,19 @@ public class CloudinaryHelper {
 	@Value("${cloudinary.secret}")
 	private String secret;
 
+	@SuppressWarnings("unchecked")
 	public String saveImage(MultipartFile image) {
 		Cloudinary cloudinary = new Cloudinary(
 				ObjectUtils.asMap("cloud_name", cloudName, "api_key", key, "api_secret", secret, "secure", true));
 
-		Map<String, Object> resume = null;
+		Map<String, Object> resume = new HashMap<>();
 		try {
 			Map<String, Object> uploadOptions = new HashMap<>();
 			uploadOptions.put("folder", "Products");
 			resume = cloudinary.uploader().upload(image.getBytes(), uploadOptions);
-		} catch (IOException e) {
-			e.printStackTrace();
+		} catch (IOException e) {			
 		}
+		
 		return (String) resume.get("url");
 	}
 

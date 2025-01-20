@@ -26,8 +26,8 @@ public class SellerController {
 	SellerService sellerService;
 
 	@GetMapping("/register")
-	public String loadRegister(ModelMap map) {
-		return sellerService.loadRegister(map);
+	public String loadRegister(ModelMap map,Seller seller) {
+		return sellerService.loadRegister(map,seller);
 	}
 	
 	@PostMapping("/register")
@@ -51,8 +51,8 @@ public class SellerController {
 	}
 	
 	@GetMapping("/add-product")
-	public String addProduct(HttpSession session,ModelMap map) {
-		return sellerService.addProduct(session,map);
+	public String addProduct(HttpSession session,Product product,ModelMap map) {
+		return sellerService.addProduct(session,product,map);
 	}
 	
 	@PostMapping("/add-product")
