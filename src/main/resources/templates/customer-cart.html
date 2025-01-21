@@ -1,227 +1,231 @@
+  <!DOCTYPE html>
+  <html xmlns:th="http://www.thymeleaf.org" lang="en">
+  <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Shopping Cart</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="shortcut icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-shop' viewBox='0 0 16 16'><path d='M2.97 1.35A1 1 0 0 1 3.73 1h8.54a1 1 0 0 1 .76.35l2.609 3.044A1.5 1.5 0 0 1 16 5.37v.255a2.375 2.375 0 0 1-4.25 1.458A2.371 2.371 0 0 1 9.875 8 2.37 2.37 0 0 1 8 7.083 2.37 2.37 0 0 1 6.125 8a2.37 2.37 0 0 1-1.875-.917A2.375 2.375 0 0 1 0 5.625V5.37a1.5 1.5 0 0 1 .361-.976l2.61-3.045zm1.78 4.275a1.375 1.375 0 0 0 2.75 0 .5.5 0 0 1 1 0 1.375 1.375 0 0 0 2.75 0 .5.5 0 0 1 1 0 1.375 1.375 0 1 0 2.75 0V5.37a.5.5 0 0 0-.12-.325L12.27 2H3.73L1.12 5.045A.5.5 0 0 0 1 5.37v.255a1.375 1.375 0 0 0 2.75 0 .5.5 0 0 1 1 0zM1.5 8.5A.5.5 0 0 1 2 9v6h1v-5a1 1 0 0 1 1-1h3a1 1 0 0 1 1 1v5h6V9a.5.5 0 0 1 1 0v6h.5a.5.5 0 0 1 0 1H.5a.5.5 0 0 1 0-1H1V9a.5.5 0 0 1 .5-.5zM4 15h3v-5H4v5zm5-5a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1v-3zm3 0h-2v3h2v-3z'/></svg>" type="image/svg+xml">    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" />
+  <style>
+  :root {
+      --primary-color: #6c63ff;
+      --secondary-color: #2c3e50;
+      --accent-color: #e74c3c;
+  }
 
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
-<head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Shopping Cart</title>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
-<link href="https://fonts.googleapis.com/css2?family=Choco+Cooky&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" />
-<style>
-:root {
-    --primary-color: #4caf50;
-    --secondary-color: #2196f3;
-    --accent-color: #ff9800;
-}
+  body {
+      font-family: 'Poppins', sans-serif;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      background: #f8f9fa;
+  }
 
-body {
-    font-family: "Choco Cooky", cursive;
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-    background-color: #f5f5f5;
-}
+  .navbar {
+      background-color: rgba(255, 255, 255, 0.95) !important;
+      backdrop-filter: blur(10px);
+  }
 
-.navbar {
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
+  .navbar-brand {
+      font-weight: 800;
+      color: var(--primary-color) !important;
+      font-size: 1.5rem;
+  }
 
-.navbar-brand {
-    font-weight: bold;
-    font-size: 1.8rem;
-    color: var(--primary-color) !important;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
+  .nav-link {
+      font-weight: 600;
+      color: var(--secondary-color) !important;
+  }
 
-.nav-link {
-    font-weight: 500;
-    transition: color 0.3s ease;
-}
+  .nav-link:hover {
+      color: var(--primary-color) !important;
+  }
 
-.nav-link:hover {
-    color: var(--primary-color) !important;
-}
+  .alert {
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
 
-.alert {
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
+  main {
+      flex: 1 0 auto;
+  }
 
-main {
-    flex: 1 0 auto;
-}
+  .btn-primary {
+      background: var(--primary-color);
+      color: white;
+      padding: 1rem 2.5rem;
+      border-radius: 50px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: all 0.3s ease;
+      border: none;
+      box-shadow: 0 4px 15px rgba(108, 99, 255, 0.3);
+  }
 
-.btn-primary {
-    background-color: var(--accent-color);
-    border: none;
-    padding: 0.8rem 2rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
+  .btn-primary:hover {
+      background: var(--secondary-color);
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(44, 62, 80, 0.3);
+  }
 
-.btn-primary:hover {
-    background-color: #f57c00;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-}
+  .cart-item {
+      transition: transform 0.2s;
+      margin-bottom: 15px;
+  }
 
-.cart-item {
-    transition: transform 0.2s;
-    margin-bottom: 15px;
-}
+  .cart-item:hover {
+      transform: translateY(-5px);
+  }
 
-.cart-item:hover {
-    transform: translateY(-5px);
-}
+  .product-image {
+      width: 100px;
+      height: 100px;
+      object-fit: contain;
+  }
 
-.product-image {
-    width: 100px;
-    height: 100px;
-    object-fit: contain;
-}
+  .btn-success {
+      background: var(--primary-color);
+      border: none;
+  }
 
-.btn-success {
-    background-color: var(--primary-color);
-    border: none;
-}
+  .btn-danger {
+      background: var(--accent-color);
+      border: none;
+  }
 
-.btn-danger {
-    background-color: #f44336;
-    border: none;
-}
+  .btn-secondary {
+      background: var(--secondary-color);
+      color: white;
+      padding: 1rem 2.5rem;
+      border-radius: 50px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: all 0.3s ease;
+      border: none;
+      box-shadow: 0 4px 15px rgba(44, 62, 80, 0.3);
+  }
 
-.btn-secondary {
-    background-color: var(--secondary-color);
-    border: none;
-    padding: 0.8rem 2rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
+  .btn-secondary:hover {
+      background: var(--primary-color);
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(108, 99, 255, 0.3);
+  }
 
-.btn-secondary:hover {
-    background-color: #1976d2;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-}
+  .footer {
+      background: var(--secondary-color);
+      color: white;
+      padding: 1.5rem 0;
+      text-align: center;
+      margin-top: auto;
+  }
+  </style>
+  </head>
+  <body>
+      <header>
+          <nav class="navbar navbar-expand-lg">
+              <div class="container">
+                  <a class="navbar-brand" href="/customer/home"><i class="bi bi-shop me-2"></i>Customer Dashboard</a>
+                  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                      <span class="navbar-toggler-icon"></span>
+                  </button>
+                  <div class="collapse navbar-collapse" id="navbarNav">
+                      <ul class="navbar-nav ms-auto">
+                          <li class="nav-item"><a class="nav-link" href="/customer/products"><i class="bi bi-grid me-1"></i>View Products</a></li>
+                          <li class="nav-item"><a class="nav-link" href="/customer/cart"><i class="bi bi-cart me-1"></i>View Cart</a></li>
+                          <li class="nav-item"><a class="nav-link" href="/"><i class="bi bi-clock-history me-1"></i>Previous Orders</a></li>
+                          <li class="nav-item"><a class="nav-link" href="/logout"><i class="bi bi-box-arrow-right me-1"></i>Logout</a></li>
+                      </ul>
+                  </div>
+              </div>
+          </nav>
+      </header>
 
-.footer {
-    background-color: #1a1a1a;
-    color: #ffffff;
-    padding: 2rem 0;
-    margin-top: auto;
-}
-</style>
-</head>
-<body>
-    <header>
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <div class="container">
-                <a class="navbar-brand" href="/customer/home"><i class="bi bi-shop me-2"></i>Customer Dashboard</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav ms-auto">
-                        <li class="nav-item"><a class="nav-link" href="/customer/products"><i class="bi bi-grid me-1"></i>View Products</a></li>
-                        <li class="nav-item"><a class="nav-link" href="/customer/cart"><i class="bi bi-cart me-1"></i>View Cart</a></li>
-                        <li class="nav-item"><a class="nav-link" href="/"><i class="bi bi-clock-history me-1"></i>Previous Orders</a></li>
-                        <li class="nav-item"><a class="nav-link" href="/logout"><i class="bi bi-box-arrow-right me-1"></i>Logout</a></li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-    </header>
+      <main>
+          <div class="container mt-4" th:if="${session.failure!=null || session.success!=null}">
+              <div class="alert alert-danger alert-dismissible fade show" th:if="${session.failure}" role="alert">
+                  <span th:text="${session.failure}"></span>
+                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+              <div class="alert alert-success alert-dismissible fade show" th:if="${session.success}" role="alert">
+                  <span th:text="${session.success}"></span>
+                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+              <div th:text="${@sessionMessageRemover.removeMessage()}"></div>
+          </div>
 
-    <main>
-        <div class="container mt-4" th:if="${session.failure!=null || session.success!=null}">
-            <div class="alert alert-danger alert-dismissible fade show" th:if="${session.failure}" role="alert">
-                <span th:text="${session.failure}"></span>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-            <div class="alert alert-success alert-dismissible fade show" th:if="${session.success}" role="alert">
-                <span th:text="${session.success}"></span>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-            <div th:text="${@sessionMessageRemover.removeMessage()}"></div>
-        </div>
+          <div class="container mt-4">
+              <h2 class="mb-4">Your Shopping Cart</h2>
+              <div class="card shadow-sm mb-4" th:each="item : ${cart.items}">
+                  <div class="card-body cart-item">
+                      <div class="row align-items-center">
+                          <div class="col-md-2">
+                              <img class="product-image" th:src="${item.imageLink}" th:alt="${item.name}" />
+                          </div>
+                          <div class="col-md-4">
+                              <h5 th:text="${item.name}"></h5>
+                              <p class="text-muted" th:text="${item.description}"></p>
+                              <span class="badge bg-primary" th:text="${item.category}"></span>
+                          </div>
+                          <div class="col-md-2">
+                              <p class="fw-bold" th:text="'₹' + ${item.price/item.quantity}"></p>
+                          </div>
+                          <div class="col-md-2">
+                              <div class="d-flex align-items-center">
+                                  <a th:href="'/customer/cart-remove/item/'+${item.id}"><button class="btn btn-danger btn-sm">-</button></a>
+                                  <span class="mx-2" th:text="${item.quantity}"></span>
+                                  <a th:href="'/customer/cart-add/item/'+${item.id}"><button class="btn btn-success btn-sm">+</button></a>
+                              </div>
+                          </div>
+                          <div class="col-md-2">
+                              <p class="fw-bold" th:text="'₹' + ${item.quantity * item.price/item.quantity}"></p>
+                          </div>
+                      </div>
+                  </div>
+              </div>
 
-        <div class="container mt-4">
-            <h2 class="mb-4">Your Shopping Cart</h2>
-            <div class="card shadow-sm mb-4" th:each="item : ${cart.items}">
-                <div class="card-body cart-item">
-                    <div class="row align-items-center">
-                        <div class="col-md-2">
-                            <img class="product-image" th:src="${item.imageLink}" th:alt="${item.name}" />
-                        </div>
-                        <div class="col-md-4">
-                            <h5 th:text="${item.name}"></h5>
-                            <p class="text-muted" th:text="${item.description}"></p>
-                            <span class="badge bg-primary" th:text="${item.category}"></span>
-                        </div>
-                        <div class="col-md-2">
-                            <p class="fw-bold" th:text="'₹' + ${item.price/item.quantity}"></p>
-                        </div>
-                        <div class="col-md-2">
-                            <div class="d-flex align-items-center">
-                                <a th:href="'/customer/cart-remove/item/'+${item.id}"><button class="btn btn-danger btn-sm">-</button></a>
-                                <span class="mx-2" th:text="${item.quantity}"></span>
-                                <a th:href="'/customer/cart-add/item/'+${item.id}"><button class="btn btn-success btn-sm">+</button></a>
-                            </div>
-                        </div>
-                        <div class="col-md-2">
-                            <p class="fw-bold" th:text="'₹' + ${item.quantity * item.price/item.quantity}"></p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+              <div class="card shadow-sm mb-4" th:if="${!cart.items.isEmpty()}">
+                  <div class="card-body">
+                      <div class="d-flex justify-content-between align-items-center">
+                          <h4>Total Amount:</h4>
+                          <h4 class="fw-bold" th:text="'₹' + ${cart.price}"></h4>
+                      </div>
+                  </div>
+              </div>
 
-            <div class="card shadow-sm mb-4" th:if="${!cart.items.isEmpty()}">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <h4>Total Amount:</h4>
-                        <h4 class="fw-bold" th:text="'₹' + ${cart.price}"></h4>
-                    </div>
-                </div>
-            </div>
-
-            <div class="d-flex justify-content-between mt-4">
-                <a href="/customer/products" class="btn btn-secondary">Continue Shopping</a>
-                <a href="/customer/checkout" class="btn btn-primary">
-                    <i class="bi bi-credit-card me-2"></i>Proceed to Checkout
-                </a>
-            </div>
+              <div class="d-flex justify-content-between mt-4">
+                  <a href="/customer/products" class="btn btn-secondary">Continue Shopping</a>
+                  <a href="/customer/checkout" class="btn btn-primary">
+                      <i class="bi bi-credit-card me-2"></i>Proceed to Checkout
+                  </a>
+              </div>
 
            
-        </div>
-    </main>
+          </div>
+      </main>
 
-    <footer class="footer text-center">
-        <div class="container">
-            <p><i class="bi bi-c-circle me-1"></i>2024 Ecommerce Store. All rights reserved.</p>
-        </div>
-    </footer>
+      <footer class="footer">
+          <div class="container">
+              <p class="mb-0"><i class="bi bi-c-circle me-1"></i>2024 Ecommerce Store. All rights reserved.</p>
+          </div>
+      </footer>
 
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            setTimeout(function() {
-                var alerts = document.querySelectorAll(".alert");
-                alerts.forEach(function(alert) {
-                    var bsAlert = new bootstrap.Alert(alert);
-                    bsAlert.close();
-                });
-            }, 2000);
-        });
-    </script>
+      <script>
+          document.addEventListener("DOMContentLoaded", function() {
+              setTimeout(function() {
+                  var alerts = document.querySelectorAll(".alert");
+                  alerts.forEach(function(alert) {
+                      var bsAlert = new bootstrap.Alert(alert);
+                      bsAlert.close();
+                  });
+              }, 2000);
+          });
+      </script>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+  </html>

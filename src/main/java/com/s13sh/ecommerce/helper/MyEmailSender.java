@@ -38,7 +38,6 @@ public class MyEmailSender {
 			
 			mailSender.send(message);
 		} catch (Exception e) {
-			e.printStackTrace();
 		}
 		System.out.println("**************" + seller.getOtp() + "***********************");
 	}
@@ -59,7 +58,6 @@ public class MyEmailSender {
 			
 			mailSender.send(message);
 		} catch (Exception e) {
-			e.printStackTrace();
 		}
 		System.out.println("**************" + customer.getOtp() + "***********************");
 	}

@@ -4,22 +4,29 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Seller Email</title>
+	<link rel="shortcut icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-shop' viewBox='0 0 16 16'><path d='M2.97 1.35A1 1 0 0 1 3.73 1h8.54a1 1 0 0 1 .76.35l2.609 3.044A1.5 1.5 0 0 1 16 5.37v.255a2.375 2.375 0 0 1-4.25 1.458A2.371 2.371 0 0 1 9.875 8 2.37 2.37 0 0 1 8 7.083 2.37 2.37 0 0 1 6.125 8a2.37 2.37 0 0 1-1.875-.917A2.375 2.375 0 0 1 0 5.625V5.37a1.5 1.5 0 0 1 .361-.976l2.61-3.045zm1.78 4.275a1.375 1.375 0 0 0 2.75 0 .5.5 0 0 1 1 0 1.375 1.375 0 0 0 2.75 0 .5.5 0 0 1 1 0 1.375 1.375 0 1 0 2.75 0V5.37a.5.5 0 0 0-.12-.325L12.27 2H3.73L1.12 5.045A.5.5 0 0 0 1 5.37v.255a1.375 1.375 0 0 0 2.75 0 .5.5 0 0 1 1 0zM1.5 8.5A.5.5 0 0 1 2 9v6h1v-5a1 1 0 0 1 1-1h3a1 1 0 0 1 1 1v5h6V9a.5.5 0 0 1 1 0v6h.5a.5.5 0 0 1 0 1H.5a.5.5 0 0 1 0-1H1V9a.5.5 0 0 1 .5-.5zM4 15h3v-5H4v5zm5-5a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1v-3zm3 0h-2v3h2v-3z'/></svg>" type="image/svg+xml">    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    
 	<style>
+		:root {
+			--primary-color: #6c63ff;
+			--secondary-color: #2c3e50;
+			--accent-color: #e74c3c;
+		}
 		* {
 			margin: 0;
 			padding: 0;
 			box-sizing: border-box;
 		}
 		body {
-			font-family: Arial, sans-serif;
+			font-family: 'Poppins', sans-serif;
 			background-color: #f8f9fa;
 			line-height: 1.6;
 			padding: 20px;
 		}
 		.container {
 			background-color: #ffffff;
-			border-radius: 8px;
-			box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+			border-radius: 15px;
+			box-shadow: 0 4px 15px rgba(108, 99, 255, 0.2);
 			width: 100%;
 			max-width: 600px;
 			margin: 0 auto;
@@ -29,42 +36,43 @@
 			color: #ffffff;
 			margin: 0;
 			font-size: 24px;
-			font-weight: 600;
+			font-weight: 800;
 		}
 		h2 {
-			color: #333333;
+			color: var(--secondary-color);
 			margin-bottom: 20px;
 			font-size: 20px;
-			font-weight: 500;
+			font-weight: 600;
 		}
 		h3 {
-			color: #555555;
+			color: var(--secondary-color);
 			margin-bottom: 8px;
 			font-size: 18px;
-			font-weight: 500;
+			font-weight: 600;
 		}
 		h4 {
-			color: #666666;
+			color: var(--secondary-color);
 			font-size: 16px;
 			font-weight: 400;
 		}
 		p {
-			color: #444444;
+			color: var(--secondary-color);
 			margin-bottom: 16px;
 		}
 		.otp {
 			font-weight: 600;
-			color: #0056b3;
+			color: var(--primary-color);
 			font-size: 28px;
-			background-color: #e7f3ff;
+			background: linear-gradient(45deg, #f3f4f6 0%, #ffffff 100%);
 			padding: 12px 24px;
-			border-radius: 6px;
+			border-radius: 50px;
 			display: inline-block;
 			margin: 16px 0;
 			letter-spacing: 2px;
+			box-shadow: 0 4px 15px rgba(108, 99, 255, 0.3);
 		}
 		.header {
-			background-color: #0056b3;
+			background: var(--primary-color);
 			color: #ffffff;
 			padding: 24px;
 			text-align: center;
@@ -73,17 +81,17 @@
 			padding: 32px 24px;
 		}
 		.footer {
-			background-color: #f8f9fa;
+			background: var(--secondary-color);
 			padding: 24px;
 			text-align: center;
-			border-top: 1px solid #e9ecef;
+			color: white;
 		}
 	</style>
 </head>
 <body>
 	<div class="container">
 		<div class="header">
-			<h1>Ecommerce Website</h1>
+			<h1>Ecommerce Store</h1>
 		</div>
 		<div class="content">
 			<h2>Hello <span th:text="${seller.name}"></span>,</h2>
@@ -93,7 +101,7 @@
 		</div>
 		<div class="footer">
 			<h3>Thanks and Regards</h3>
-			<h4>Ecommerce Website Team</h4>
+			<h4>Ecommerce Store Team</h4>
 		</div>
 	</div>
 </body>
